@@ -29,6 +29,11 @@ h2 {
   animation-name: blink;
   animation-iteration-count: infinite;
 }
+h3 {
+  color: red;
+  font-size: 64px;
+  line-height: 50vh;
+}
 p {
   bottom: 2px;
   color:#666;
@@ -44,8 +49,9 @@ p {
     color: rgba(255,255,255,0);
   }
 }
-#title-page {
+.page {
   background: #111;
+  display: block;
   height: 88vh;
   margin: 2vh auto 10vh;
   position: relative;
@@ -53,22 +59,47 @@ p {
   vertical-align: middle;
   width: 88vw;
 }
+#title-page.started {
+  display: none;
+}
+#game-over.show {
+  display: block;
+}
+#end-score {
+  font-size: 32px;
+}
     </style>
   </head>
 
   <body>
-    <div id="title-page">
+    <div id="title-page" class="page">
       <h1>Demon Hunter<span>S</span></h1>
       <h2>PRESS ANY KEY TO START</h2>
       <p>&copy;2018 Oliver Bertrand</p>
     </div>
-
-
-    <div class="site-wrap">
-      <p></p>
+    <div id="game-over" class="page">
+      <h3>GAME OVER</h3>
+      <h4 id="end-score"></h4>
     </div>
+
   </body>
   <script type="text/javascript">
-    
+function Game(config) {
+  Game.init(config);
+};
+Game.init = function(config) {
+  document.addEventListener('keydown', function(e){
+    Game.start(config);
+  }, false);
+}
+Game.start = function(config) {
+  document.getElementById('title-page').classList.add('started');
+  Game.over();
+}
+Game.over = function(currentScore) {
+  document.getElementById('game-over').classList.add('show');
+  document.getElementById('end-score').innerHTML = (currentScore || '00');
+}
+Game();
   </script>
 </html>

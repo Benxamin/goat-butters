@@ -13,7 +13,6 @@ html, body {
 }
 h1 {
   font-family: 'Berkshire Swash', cursive;
-  font-size: 124px;
   line-height: 50vh;
   margin: 0;
   position: relative;
@@ -21,7 +20,7 @@ h1 {
 }
 h1 span {
   position: relative;
-  top:24px;
+  top:5px;
 }
 h2 {
   font-size: 32px;
@@ -68,6 +67,29 @@ p {
 #end-score {
   font-size: 32px;
 }
+@media screen and (min-width: 300px) {
+  h1 {font-size: 32px; line-height: 24vh; }
+  h2 { font-size: 20px; }
+  h1 span { top: 5px; }
+  #title-page p { left: 10%; }
+}
+@media screen and (min-width: 400px) {
+  h1 {font-size: 42px; line-height: 34vh; }
+  h2 { font-size: 24px; }
+  h1 span { top: 7px; }
+  #title-page p { left: 20%; }
+}
+@media screen and (min-width: 430px) {
+  h1 {font-size: 48px; line-height: 40vh; }
+  h2 { font-size: 28px; }
+  h1 span { top: 10px; }
+  #title-page p { left: 22%; }
+}
+
+
+@media screen and (min-width: 960px) {
+  h1 { font-size: 114px; line-height: 50vh; }
+}
     </style>
   </head>
 
@@ -75,7 +97,7 @@ p {
     <div id="title-page" class="page">
       <h1>Demon Hunter<span>S</span></h1>
       <h2>PRESS ANY KEY TO START</h2>
-      <p>&copy;2018 Oliver Bertrand</p>
+      <p>&copy;2018 Benjamin &amp; Oliver Bertrand</p>
     </div>
     <div id="game-over" class="page">
       <h3>GAME OVER</h3>

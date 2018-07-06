@@ -53,7 +53,8 @@ p {
 }
 .page {
   background: #111;
-  display: block;
+  border: 1px solid #fff;
+  display: none;
   height: 88vh;
   margin: 2vh auto 10vh;
   position: relative;
@@ -61,10 +62,13 @@ p {
   vertical-align: middle;
   width: 88vw;
 }
+#title-page {
+  display: block;
+}
 #title-page.started {
   display: none;
 }
-#game-over.show {
+.show {
   display: block;
 }
 #end-score {
@@ -102,6 +106,9 @@ p {
       <h2>PRESS ANY KEY TO START</h2>
       <p>&copy;2018 Benjamin &amp; Oliver Bertrand</p>
     </div>
+    <div id="level-1" class="page">
+      <h3>Level 1</h3>
+    <div>
     <div id="game-over" class="page">
       <h3>GAME OVER</h3>
       <h4 id="end-score"></h4>
@@ -109,22 +116,47 @@ p {
 
   </body>
   <script type="text/javascript">
+function handleStart(e) {
+  Game.start();
+}
 function Game(config) {
   Game.init(config);
 };
 Game.init = function(config) {
-  document.addEventListener('keydown', function(e){
-    Game.start(config);
-  }, false);
+  // Build Player from config
+  Game.Player = {
+    'health': (config.health || 100),
+    'score': (config.score || 0),
+    'level': (config.level || 1)
+  }
+  document.addEventListener('keydown', handleStart, false);
 }
-Game.start = function(config) {
+Game.start = function() {
+  // Start UI
+  document.removeEventListener('keydown', handleStart, false);
   document.getElementById('title-page').classList.add('started');
-  Game.over();
+  document.getElementById('level-1').classList.add('show');
+
+  Game.cycle();
 }
+
+Game.cycle = function() {
+  // End Game
+  if (Game.Player.health === 0) {
+    Game.over(Game.Player.score);
+  }
+}
+
 Game.over = function(currentScore) {
+  let pages = document.getElementsByClassName('page');
+console.log('pages', pages);
+  for (var i = pages.length - 1; i >= 0; i--) {
+    pages[i].classList.remove('show');
+  }
+
   document.getElementById('game-over').classList.add('show');
   document.getElementById('end-score').innerHTML = (currentScore || '00');
 }
-Game();
+Game({'health': 100, 'score': 0});
   </script>
 </html>

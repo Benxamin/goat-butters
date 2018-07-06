@@ -122,6 +122,71 @@ function handleStart(e) {
 function Game(config) {
   Game.init(config);
 };
+
+// Motion
+var keyMap = {
+   8: 'backspace',
+   9: 'tab',
+  13: 'enter',
+  16: 'shift',
+  17: 'control',
+  18: 'alt',
+  20: 'capslock',
+  27: 'escape',
+  32: 'space',
+  39: 'right',
+  68: 'right',
+  37: 'left',
+  65: 'left',
+  38: 'up',
+  87: 'up',
+  40: 'down',
+  83: 'down',
+  91: 'leftcmd',
+  93: 'rightcmd'
+};
+function keydown(event) {
+  let key = keyMap[event.keyCode];
+  state.pressedKeys[key] = true;
+}
+function keyup(event) {
+  let key = keyMap[event.keyCode];
+  state.pressedKeys[key] = false;
+}
+window.addEventListener("keydown", keydown, false);
+window.addEventListener("keyup", keyup, false);
+
+function update(progress) {
+  if (state.pressedKeys.left) {
+    state.x -= progress;
+  }
+  if (state.pressedKeys.right) {
+    state.x += progress;
+  }
+  if (state.pressedKeys.up) {
+    state.y -= progress;
+  }
+  if (state.pressedKeys.down) {
+    state.y += progress;
+  }
+
+  // Flip position at boundaries
+  // if (state.x > width) {
+  //   state.x -= width
+  // }
+  // else if (state.x < 0) {
+  //   state.x += width
+  // }
+  // if (state.y > height) {
+  //   state.y -= height
+  // }
+  // else if (state.y < 0) {
+  //   state.y += height
+  // }
+}
+
+
+
 Game.init = function(config) {
   // Build Player from config
   Game.Player = {
@@ -137,14 +202,30 @@ Game.start = function() {
   document.getElementById('title-page').classList.add('started');
   document.getElementById('level-1').classList.add('show');
 
-  Game.cycle();
+  requestAnimationFrame(Game.cycle);
 }
-
-Game.cycle = function() {
+Game.hit = function(targetObject) {
+    // update health of target
+    // update points
+}
+Game.update = function() {
   // End Game
   if (Game.Player.health === 0) {
     Game.over(Game.Player.score);
   }
+};
+Game.draw = function() {
+
+};
+Game.cycle = function() {
+  // Update state
+  Game.update();
+
+  // Render to screen
+  Game.draw();
+
+  // Loop!
+  requestAnimationFrame(Game.cycle);
 }
 
 Game.over = function(currentScore) {

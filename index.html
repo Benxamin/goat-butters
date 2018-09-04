@@ -5,104 +5,105 @@
     <title>Demon Hunters</title>
     <link href="https://fonts.googleapis.com/css?family=Berkshire+Swash" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
     <style type="text/css">
-html, body {
-  background: #000;
-  color: #ddd;
-  font-family: 'VT323', monospace;
-}
-h1 {
-  font-family: 'Berkshire Swash', cursive;
-  letter-spacing: 0.0125em;
-  line-height: 50vh;
-  margin: 0;
-  position: relative;
-  text-shadow: -4px 5px 5px rgba(250,10,0, .85), 4px 5px 5px rgba(10,188,212, .85); 
-  z-index: 1;
-}
-h1 span {
-  position: relative;
-  top: 5px;
-  z-index: -1;
-}
-h2 {
-  font-size: 32px;
-  animation-duration: 1s;
-  animation-name: blink;
-  animation-iteration-count: infinite;
-}
-h3 {
-  color: red;
-  font-size: 64px;
-  line-height: 50vh;
-}
-p {
-  bottom: 2px;
-  color:#666;
-  font-size:16px;
-  left:45%;
-  position: absolute;
-}
-@keyframes blink {
-  from {
-    color: rgba(255,255,255,100);
-  }
-  to {
-    color: rgba(255,255,255,0);
-  }
-}
-.page {
-  background: #111;
-  border: 1px solid #fff;
-  display: none;
-  height: 88vh;
-  margin: 2vh auto 10vh;
-  position: relative;
-  text-align: center;
-  vertical-align: middle;
-  width: 88vw;
-}
-#title-page {
-  display: block;
-}
-#title-page.started {
-  display: none;
-}
-.show {
-  display: block;
-}
-#end-score {
-  font-size: 32px;
-}
-@media screen and (min-width: 300px) {
-  h1 {font-size: 32px; line-height: 24vh; }
-  h2 { font-size: 20px; }
-  h1 span { top: 5px; }
-  #title-page p { left: 10%; }
-}
-@media screen and (min-width: 400px) {
-  h1 {font-size: 42px; line-height: 34vh; }
-  h2 { font-size: 24px; }
-  h1 span { top: 7px; }
-  #title-page p { left: 20%; }
-}
-@media screen and (min-width: 430px) {
-  h1 {font-size: 48px; line-height: 40vh; }
-  h2 { font-size: 28px; }
-  h1 span { top: 10px; }
-  #title-page p { left: 22%; }
-}
+      html, body {
+        background: #000;
+        color: #ddd;
+        font-family: 'VT323', monospace;
+      }
+      h1 {
+        font-family: 'Berkshire Swash', cursive;
+        letter-spacing: 0.0125em;
+        line-height: 50vh;
+        margin: 0;
+        position: relative;
+        text-shadow: -4px 5px 5px rgba(250,10,0, .85), 4px 5px 5px rgba(10,188,212, .85); 
+        z-index: 1;
+      }
+      h1 span {
+        position: relative;
+        top: 5px;
+        z-index: -1;
+      }
+      h2 {
+        font-size: 32px;
+        animation-duration: 1s;
+        animation-name: blink;
+        animation-iteration-count: infinite;
+      }
+      h3 {
+        color: red;
+        font-size: 64px;
+        line-height: 50vh;
+      }
+      p {
+        bottom: 2px;
+        color:#666;
+        font-size:16px;
+        left:45%;
+        position: absolute;
+      }
+      @keyframes blink {
+        from {
+          color: rgba(255,255,255,100);
+        }
+        to {
+          color: rgba(255,255,255,0);
+        }
+      }
+      .page {
+        background: #111;
+        border: 1px solid #fff;
+        display: none;
+        height: 88vh;
+        margin: 2vh auto 10vh;
+        position: relative;
+        text-align: center;
+        vertical-align: middle;
+        width: 88vw;
+      }
+      #title-page {
+        display: block;
+      }
+      #title-page.started {
+        display: none;
+      }
+      .show {
+        display: block;
+      }
+      #end-score {
+        font-size: 32px;
+      }
+      @media screen and (min-width: 300px) {
+        h1 {font-size: 32px; line-height: 24vh; }
+        h2 { font-size: 20px; }
+        h1 span { top: 5px; }
+        #title-page p { left: 10%; }
+      }
+      @media screen and (min-width: 400px) {
+        h1 {font-size: 42px; line-height: 34vh; }
+        h2 { font-size: 24px; }
+        h1 span { top: 7px; }
+        #title-page p { left: 20%; }
+      }
+      @media screen and (min-width: 430px) {
+        h1 {font-size: 48px; line-height: 40vh; }
+        h2 { font-size: 28px; }
+        h1 span { top: 10px; }
+        #title-page p { left: 22%; }
+      }
 
 
-@media screen and (min-width: 960px) {
-  h1 { font-size: 114px; line-height: 50vh; }
-}
+      @media screen and (min-width: 960px) {
+        h1 { font-size: 114px; line-height: 50vh; }
+      }
     </style>
   </head>
 
   <body>
     <div id="title-page" class="page">
-      <h1>Demon Hunter<span>S</span></h1>
+      <h1><span>D</span>emon Hunter<span>S</span></h1>
       <h2>PRESS ANY KEY TO START</h2>
       <p>&copy;2018 Benjamin &amp; Oliver Bertrand</p>
     </div>
@@ -121,6 +122,11 @@ function handleStart(e) {
 }
 function Game(config) {
   Game.init(config);
+};
+
+// Game State
+state  = {
+  'pressedKeys': []
 };
 
 // Motion
@@ -143,14 +149,18 @@ var keyMap = {
   40: 'down',
   83: 'down',
   91: 'leftcmd',
-  93: 'rightcmd'
+  93: 'rightcmd',
+  219: 'leftbracket',
+  221: 'rightbraket'
 };
 function keydown(event) {
   let key = keyMap[event.keyCode];
+  Game.debug && console.log('keydown', key, event.keyCode);
   state.pressedKeys[key] = true;
 }
 function keyup(event) {
   let key = keyMap[event.keyCode];
+  Game.debug && console.log('keyup', key, event.keyCode);
   state.pressedKeys[key] = false;
 }
 window.addEventListener("keydown", keydown, false);
@@ -188,6 +198,7 @@ function update(progress) {
 
 
 Game.init = function(config) {
+  Game.debug = config.debug || false;
   // Build Player from config
   Game.Player = {
     'health': (config.health || 100),
@@ -201,7 +212,8 @@ Game.start = function() {
   document.removeEventListener('keydown', handleStart, false);
   document.getElementById('title-page').classList.add('started');
   document.getElementById('level-1').classList.add('show');
-
+  
+  Game.running = true;
   requestAnimationFrame(Game.cycle);
 }
 Game.hit = function(targetObject) {
@@ -218,16 +230,24 @@ Game.draw = function() {
 
 };
 Game.cycle = function() {
-  // Update state
-  Game.update();
+  if (!Game.started) {
+    Game.started = true;
 
-  // Render to screen
-  Game.draw();
+    // Update state
+    Game.update();
 
-  // Loop!
-  requestAnimationFrame(Game.cycle);
+    // Render to screen
+    Game.draw();
+
+    // Loop!
+    Game.stopFrame = requestAnimationFrame(Game.cycle);
+  }
 }
-
+Game.stop = function(stopFrame) {
+  Game.running = false;
+  Game.started = false;
+  window.cancelAnimationFrame(stopFrame);
+};
 Game.over = function(currentScore) {
   let pages = document.getElementsByClassName('page');
 console.log('pages', pages);
@@ -238,6 +258,6 @@ console.log('pages', pages);
   document.getElementById('game-over').classList.add('show');
   document.getElementById('end-score').innerHTML = (currentScore || '00');
 }
-Game({'health': 100, 'score': 0});
+Game({'health': 100, 'score': 0, debug: true });
   </script>
 </html>

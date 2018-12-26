@@ -107,9 +107,19 @@
       <h2>PRESS ANY KEY TO START</h2>
       <p>&copy;2018 Benjamin &amp; Oliver Bertrand</p>
     </div>
+
     <div id="level-1" class="page">
       <h3>Level 1</h3>
     <div>
+
+    <div id="level-2" class="page">
+      <h3>Level 2</h3>
+    <div>
+
+    <div id="level-3" class="page">
+      <h3>Level 3</h3>
+    <div>
+
     <div id="game-over" class="page">
       <h3>GAME OVER</h3>
       <h4 id="end-score"></h4>
@@ -131,25 +141,25 @@ state  = {
 
 // Motion
 var keyMap = {
-   8: 'backspace',
-   9: 'tab',
-  13: 'enter',
-  16: 'shift',
-  17: 'control',
-  18: 'alt',
-  20: 'capslock',
-  27: 'escape',
-  32: 'space',
-  39: 'right',
-  68: 'right',
-  37: 'left',
-  65: 'left',
-  38: 'up',
-  87: 'up',
-  40: 'down',
-  83: 'down',
-  91: 'leftcmd',
-  93: 'rightcmd',
+    8: 'backspace',
+    9: 'tab',
+   13: 'enter',
+   16: 'shift',
+   17: 'control',
+   18: 'alt',
+   20: 'capslock',
+   27: 'escape',
+   32: 'space',
+   39: 'right',
+   68: 'right',
+   37: 'left',
+   65: 'left',
+   38: 'up',
+   87: 'up',
+   40: 'down',
+   83: 'down',
+   91: 'leftcmd',
+   93: 'rightcmd',
   219: 'leftbracket',
   221: 'rightbraket'
 };
@@ -199,7 +209,8 @@ function update(progress) {
 
 Game.init = function(config) {
   Game.debug = config.debug || false;
-  // Build Player from config
+
+  // Restore Player from config
   Game.Player = {
     'health': (config.health || 100),
     'score': (config.score || 0),
@@ -207,6 +218,7 @@ Game.init = function(config) {
   }
   document.addEventListener('keydown', handleStart, false);
 }
+
 Game.start = function() {
   // Start UI
   document.removeEventListener('keydown', handleStart, false);
@@ -216,19 +228,23 @@ Game.start = function() {
   Game.running = true;
   requestAnimationFrame(Game.cycle);
 }
+
 Game.hit = function(targetObject) {
     // update health of target
     // update points
 }
+
 Game.update = function() {
   // End Game
   if (Game.Player.health === 0) {
     Game.over(Game.Player.score);
   }
 };
+
 Game.draw = function() {
 
 };
+
 Game.cycle = function() {
   if (!Game.started) {
     Game.started = true;
@@ -242,12 +258,14 @@ Game.cycle = function() {
     // Loop!
     Game.stopFrame = requestAnimationFrame(Game.cycle);
   }
-}
+};
+
 Game.stop = function(stopFrame) {
   Game.running = false;
   Game.started = false;
   window.cancelAnimationFrame(stopFrame);
 };
+
 Game.over = function(currentScore) {
   let pages = document.getElementsByClassName('page');
 console.log('pages', pages);
@@ -257,7 +275,8 @@ console.log('pages', pages);
 
   document.getElementById('game-over').classList.add('show');
   document.getElementById('end-score').innerHTML = (currentScore || '00');
-}
+};
+
 Game({'health': 100, 'score': 0, debug: true });
   </script>
 </html>

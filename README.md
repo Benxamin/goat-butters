@@ -11,4 +11,4 @@ On Mac OS X: `python -m SimpleHTTPServer 8000`
 
 ## Run
 1. Start local server.
-2. http:localhost:8000/
+2. http://localhost:8000/

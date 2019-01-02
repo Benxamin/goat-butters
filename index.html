@@ -12,6 +12,9 @@
         color: #ddd;
         font-family: 'VT323', monospace;
       }
+      body {
+        position: relative;
+      }
       h1 {
         font-family: 'Berkshire Swash', cursive;
         letter-spacing: 0.0125em;
@@ -36,6 +39,13 @@
         color: red;
         font-size: 64px;
         line-height: 50vh;
+        animation-duration: 5s;
+        animation-name: fadeout;
+        animation-iteration-count: 1;
+      }
+      #pause h3 {
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
       }
       p {
         bottom: 2px;
@@ -43,6 +53,18 @@
         font-size:16px;
         left:45%;
         position: absolute;
+      }
+      ul {
+        font-size: 32px;
+        list-style-type: none;
+        margin: 0;
+      }
+      a {
+        color: #fff;
+        text-decoration: none;
+      }
+      a:focus, a:hover {
+        color: #6F6;
       }
       @keyframes blink {
         from {
@@ -52,6 +74,16 @@
           color: rgba(255,255,255,0);
         }
       }
+      @keyframes fadeout {
+        from {
+          color: red;
+          visibility: visible;
+        }
+        to {
+          color: transparent;
+          visibility: hidden;
+        }
+      }     
       .page {
         background: #111;
         border: 1px solid #fff;
@@ -99,6 +131,9 @@
       @media screen and (min-width: 960px) {
         h1 { font-size: 114px; line-height: 50vh; }
       }
+      .hide {
+        display: none;
+      }
     </style>
   </head>
 
@@ -109,15 +144,25 @@
       <p>&copy;2018 Benjamin &amp; Oliver Bertrand</p>
     </div>
 
-    <div id="level-1" class="page">
+    <div id="pause" class="page">
+      <h3>PAUSE</h3>
+      <h4 id="currentScore"></h4>
+      <ul>
+        <li><a id="resume" href="#">Keep playing</a></li>
+        <li><a id="restart-level" href="#">Restart Level</a></li>
+        <li><a id="quit-game" href="#">Quit Game</a></li>
+      </ul>
+    </div>
+
+    <div id="level-1" class="level page">
       <h3>Level 1</h3>
     </div>
 
-    <div id="level-2" class="page">
+    <div id="level-2" class="level page">
       <h3>Level 2</h3>
     </div>
 
-    <div id="level-3" class="page">
+    <div id="level-3" class="level page">
       <h3>Level 3</h3>
     </div>
 
@@ -131,6 +176,22 @@
 function handleStart(e) {
   Game.start();
 }
+
+function handleResume(e) {
+  console.log('Game resumed!');
+  Game.resume();
+}
+
+function handleLevelReset(e) {
+  console.log('todo: handle level reset');
+}
+
+function handleQuitGame(e) {
+  console.log('Game abandoned')
+  Game.Player.health = 0;
+  Game.resume();
+}
+
 function Game(config) {
   Game.init(config);
 };
@@ -177,37 +238,6 @@ function keyup(event) {
 window.addEventListener("keydown", keydown, false);
 window.addEventListener("keyup", keyup, false);
 
-function update(progress) {
-  if (state.pressedKeys.left) {
-    state.x -= progress;
-  }
-  if (state.pressedKeys.right) {
-    state.x += progress;
-  }
-  if (state.pressedKeys.up) {
-    state.y -= progress;
-  }
-  if (state.pressedKeys.down) {
-    state.y += progress;
-  }
-
-  // Flip position at boundaries
-  // if (state.x > width) {
-  //   state.x -= width
-  // }
-  // else if (state.x < 0) {
-  //   state.x += width
-  // }
-  // if (state.y > height) {
-  //   state.y -= height
-  // }
-  // else if (state.y < 0) {
-  //   state.y += height
-  // }
-}
-
-
-
 Game.init = function(config) {
   Game.debug = config.debug || false;
 
@@ -216,49 +246,105 @@ Game.init = function(config) {
     'health': (config.health || 100),
     'score': (config.score || 0),
     'level': (config.level || 1)
-  }
+  };
   document.addEventListener('keydown', handleStart, false);
-}
+  document.querySelector('#resume').addEventListener('click', handleResume, false);
+  document.querySelector('#restart-level').addEventListener('click', handleLevelReset, false);
+  document.querySelector('#quit-game').addEventListener('click', handleQuitGame, false);
+};
+
+Game.fadeTitle = function(levelNumberString) {
+  document.querySelector('#level-'+ levelNumberString + ' h3').classList.add('hide');
+  console.log('faded: ' + levelNumberString);
+};
+
+Game.startLevel = function(levelNumberString) {
+  document.getElementById('level-'+ levelNumberString).classList.add('show');
+  setTimeout(function() { Game.fadeTitle(levelNumberString); }, 4500);
+};
 
 Game.start = function() {
   // Start UI
   document.removeEventListener('keydown', handleStart, false);
   document.getElementById('title-page').classList.add('started');
-  document.getElementById('level-1').classList.add('show');
-  
   Game.running = true;
+  Game.startLevel("1");
   requestAnimationFrame(Game.cycle);
-}
+};
+
+Game.pause = function() {
+  Game.util.hideLevels();
+  document.getElementById('pause').classList.add('show');
+  Game.stop();
+};
+
+Game.resume = function() {
+
+};
 
 Game.hit = function(targetObject) {
     // update health of target
     // update points
-}
+};
 
-Game.update = function() {
+Game.update = function(progress) {
+  // console.log('updating...')
   // End Game
   if (Game.Player.health === 0) {
     Game.over(Game.Player.score);
   }
+
+  if (Game.running) {
+    if (state.pressedKeys.escape) {
+      Game.pause(); 
+      return;
+    }
+    // if (state.pressedKeys.left) {
+    //   state.x -= progress;
+    // }
+    // if (state.pressedKeys.right) {
+    //   state.x += progress;
+    // }
+    // if (state.pressedKeys.up) {
+    //   state.y -= progress;
+    // }
+    // if (state.pressedKeys.down) {
+    //   state.y += progress;
+    // }
+
+    // Flip position at boundaries
+    // if (state.x > width) {
+    //   state.x -= width
+    // }
+    // else if (state.x < 0) {
+    //   state.x += width
+    // }
+    // if (state.y > height) {
+    //   state.y -= height
+    // }
+    // else if (state.y < 0) {
+    //   state.y += height
+    // }
+  }
 };
 
 Game.draw = function() {
-
+  // console.log('drawing...');
 };
 
 Game.cycle = function() {
-  if (!Game.started) {
-    Game.started = true;
+  // if (!Game.started) {
+  //   Game.started = true;
+  // }
 
-    // Update state
-    Game.update();
+  // Update state
+  Game.update();
 
-    // Render to screen
-    Game.draw();
+  // Render to screen
+  Game.draw();
 
-    // Loop!
-    Game.stopFrame = requestAnimationFrame(Game.cycle);
-  }
+  // Loop!
+  Game.stopFrame = requestAnimationFrame(Game.cycle);
 };
 
 Game.stop = function(stopFrame) {
@@ -268,14 +354,22 @@ Game.stop = function(stopFrame) {
 };
 
 Game.over = function(currentScore) {
+  Game.stop(Game.stopFrame);
+  Game.util.hideLevels();
+  document.getElementById('game-over').classList.add('show');
+  document.getElementById('end-score').innerHTML = (currentScore || '00');
+  document.querySelector('#resume').removeEventListener('click', handleResume, false);
+  document.querySelector('#restart-level').removeEventListener('click', handleLevelReset, false);
+  document.querySelector('#quit-game').removeEventListener('click', handleQuitGame, false);
+};
+
+Game.util = {};
+
+Game.util.hideLevels = function() {
   let pages = document.getElementsByClassName('page');
-console.log('pages', pages);
   for (var i = pages.length - 1; i >= 0; i--) {
     pages[i].classList.remove('show');
   }
-
-  document.getElementById('game-over').classList.add('show');
-  document.getElementById('end-score').innerHTML = (currentScore || '00');
 };
 
 Game({'health': 100, 'score': 0, debug: true });

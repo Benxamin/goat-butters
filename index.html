@@ -83,7 +83,15 @@
           color: transparent;
           visibility: hidden;
         }
-      }     
+      }
+      @keyframes slimebounce {
+        from {
+          background-position-x: 0;
+        }
+        to {
+          background-position-x: -144px;
+        }
+      }
       .page {
         background: #111;
         border: 1px solid #fff;
@@ -104,11 +112,23 @@
       .show {
         display: block;
       }
+      .level {
+        position: relative;
+      }
       #end-score {
         font-size: 32px;
       }
       #level-1 {
         background: url('/images/background.png') bottom left repeat-x;
+      }
+      .mob.slime {
+        background: url('/images/mob_slime.png') top left no-repeat;
+        position: absolute;
+        bottom: 65px;
+        right: 20px;
+        height: 16px;
+        width: 16px;
+        animation: slimebounce 1s steps(9) infinite;        
       }
       @media screen and (min-width: 300px) {
         h1 {font-size: 32px; line-height: 24vh; }
@@ -258,17 +278,32 @@ Game.fadeTitle = function(levelNumberString) {
   console.log('faded: ' + levelNumberString);
 };
 
-Game.startLevel = function(levelNumberString) {
+Game.startLevel = function(levelNumberString, cb) {
   document.getElementById('level-'+ levelNumberString).classList.add('show');
-  setTimeout(function() { Game.fadeTitle(levelNumberString); }, 4500);
+  setTimeout(function() { 
+    Game.fadeTitle(levelNumberString);
+    if (!!cb && (typeof cb === 'function')) { cb(levelNumberString); }
+  }, 4500);
 };
+
+Game.addPlayer = function(levelNumberString) {
+  return;
+}
+
+Game.addMobs = function(levelNumberString) {
+  var levelContainer = document.getElementById('level-'+ levelNumberString);
+  levelContainer.insertAdjacentHTML('beforeend', Game.mobs.slime);
+}
 
 Game.start = function() {
   // Start UI
   document.removeEventListener('keydown', handleStart, false);
   document.getElementById('title-page').classList.add('started');
   Game.running = true;
-  Game.startLevel("1");
+  Game.startLevel("1", function(levelNumberString) {
+    Game.addPlayer(levelNumberString);
+    Game.addMobs(levelNumberString);
+  });
   requestAnimationFrame(Game.cycle);
 };
 
@@ -365,12 +400,19 @@ Game.over = function(currentScore) {
 
 Game.util = {};
 
-Game.util.hideLevels = function() {
+Game.util.hideLevels = function(cb) {
   let pages = document.getElementsByClassName('page');
   for (var i = pages.length - 1; i >= 0; i--) {
     pages[i].classList.remove('show');
   }
+  if (!!cb && (typeof cb === 'function')) {
+    cb();
+  }
 };
+
+Game.mobs = {
+  slime: '<div class="mob slime"></div>'
+}
 
 Game({'health': 100, 'score': 0, debug: true });
   </script>

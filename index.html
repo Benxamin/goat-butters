@@ -293,6 +293,7 @@ Game.addPlayer = function(levelNumberString) {
 Game.addMobs = function(levelNumberString) {
   var levelContainer = document.getElementById('level-'+ levelNumberString);
   levelContainer.insertAdjacentHTML('beforeend', Game.mobs.slime);
+  Game.state.slime = { el: document.querySelector('div.mob.slime') };
 }
 
 Game.start = function() {
@@ -303,8 +304,8 @@ Game.start = function() {
   Game.startLevel("1", function(levelNumberString) {
     Game.addPlayer(levelNumberString);
     Game.addMobs(levelNumberString);
+    requestAnimationFrame(Game.cycle);
   });
-  requestAnimationFrame(Game.cycle);
 };
 
 Game.pause = function() {
@@ -322,6 +323,8 @@ Game.hit = function(targetObject) {
     // update points
 };
 
+Game.state = { frame: 0 };
+
 Game.update = function(progress) {
   // console.log('updating...')
   // End Game
@@ -333,6 +336,17 @@ Game.update = function(progress) {
     if (state.pressedKeys.escape) {
       Game.pause(); 
       return;
+    }
+
+    Game.state.frame += 1;
+
+    switch (Game.state.frame % 6) {
+      case 0:
+        let currentSlimeRight = (Game.state.slime.el.offsetParent.offsetWidth - 2) - (Game.state.slime.el.offsetLeft + Game.state.slime.el.offsetWidth);
+        Game.state.slime.update = (currentSlimeRight + 1).toString() + 'px';
+        break;
+      default:
+        break;
     }
     // if (state.pressedKeys.left) {
     //   state.x -= progress;
@@ -365,12 +379,10 @@ Game.update = function(progress) {
 
 Game.draw = function() {
   // console.log('drawing...');
+  Game.state.slime.el.style.right = Game.state.slime.update;
 };
 
 Game.cycle = function() {
-  // if (!Game.started) {
-  //   Game.started = true;
-  // }
 
   // Update state
   Game.update();
